@@ -1,16 +1,25 @@
+// ProductItem.js
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Card from '../UI/Card';
 import classes from './ProductItem.module.css';
-import { addItem } from '../../ReduxStore/CartSlice';
+import { addItem, updateQuantity } from '../../ReduxStore/CartSlice';
 
 const ProductItem = (props) => {
-  const { title, price, description } = props;
-  const dispatch = useDispatch()
-  const addItems = useSelector((state) => state.cart.items)
+  const { id, title, price, description } = props;
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
 
-  const handleAddItem = () => {
-    dispatch(addItem({title,price,description}))
-  }
+  const itemInCart = cartItems.find(item => item.id === id);
+  const quantityInCart = itemInCart ? itemInCart.quantity : 0;
+
+  const handleAddToCart = () => {
+    if (itemInCart) {
+      dispatch(updateQuantity({ dataId: id, newQuantity: quantityInCart + 1 }));
+    } else {
+      dispatch(addItem({ id, title, price, description }));
+    }
+  };
 
   return (
     <li className={classes.item}>
@@ -21,7 +30,7 @@ const ProductItem = (props) => {
         </header>
         <p>{description}</p>
         <div className={classes.actions}>
-          <button onClick={handleAddItem}>Add to Cart</button>
+          <button onClick={handleAddToCart}>Add to Cart</button>
         </div>
       </Card>
     </li>
