@@ -1,4 +1,3 @@
-// ProductItem.js
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Card from '../UI/Card';
@@ -8,17 +7,9 @@ import { addItem, updateQuantity } from '../../ReduxStore/CartSlice';
 const ProductItem = (props) => {
   const { id, title, price, description } = props;
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items);
-
-  const itemInCart = cartItems.find(item => item.id === id);
-  const quantityInCart = itemInCart ? itemInCart.quantity : 0;
 
   const handleAddToCart = () => {
-    if (itemInCart) {
-      dispatch(updateQuantity({ dataId: id, newQuantity: quantityInCart + 1 }));
-    } else {
       dispatch(addItem({ id, title, price, description }));
-    }
   };
 
   return (

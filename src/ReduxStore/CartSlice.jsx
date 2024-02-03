@@ -4,6 +4,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState: {
     showCart: false,
+    notification: null,
     items: [],
     totalQty: 0,
   },
@@ -11,6 +12,15 @@ const cartSlice = createSlice({
     toggleCart(state) {
       state.showCart = !state.showCart;
     },
+
+    showNotification(state, action) {
+      state.notification = {
+        status: action.payload.status,
+        title: action.payload.title,
+        message: action.payload.message,
+      };
+  },
+    
     addItem(state, action) {
       const data = action.payload;
       const existingData = state.items.find((item) => item.id === data.id);
@@ -47,5 +57,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { toggleCart, addItem, removeItem, updateQuantity } = cartSlice.actions;
+export const { toggleCart, addItem, removeItem, updateQuantity,showNotification } = cartSlice.actions;
 export default cartSlice.reducer;
